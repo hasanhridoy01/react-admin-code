@@ -1,0 +1,74 @@
+--------------TanStack Query-------------------------------------------------!
+---> it is a powerful async state management we have not use to useEffect and and not define a new state..................!
+---> 1st it init on main.jsx page. while using another components.........!
+---> 2nd it use on another components. provider a unique key which is call a refetch when data was loaded.................!
+---> 3rd you have 3 value....1.isPending..2.isError....3.isSuccess...................................................................!
+
+----using main page-------------------------!
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Example />
+    </QueryClientProvider>
+  )
+}
+
+-------------------using another page Get API---------------------!
+import {
+  useQuery,
+} from '@tanstack/react-query'
+
+const { refetch, isPending, isError, isSuccess, data: users } = useQuery({
+    //user on cart.....................!
+    queryKey: ['cart', user?.email],
+    const queryFn = async () => {
+        try {
+            const response = await axios('https://api.github.com/repos/TanStack/query?email=${user.email}');
+            const data = await response.data; 
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error; 
+        }
+    };
+})
+
+if (isPending) return 'Loading...';
+if (error) return 'An error has occurred: ' + error.message;
+
+
+---------------using another page POST API-----------------------------------------------------------!
+const queryClient = useQueryClient();
+
+const mutation = useMutation(
+    newPost => axios.post('/api/posts', newPost),
+    {
+        onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries('posts');
+        },
+    }
+);
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const newPost = {
+        title: event.target.title.value,
+        content: event.target.content.value,
+    };
+    mutation.mutate(newPost);
+};
+
+---------------using another page Refetch on another components-------------------------------------!
+const [, refetch] = useQuery();
+
+
+--important Topic-----------
+----Refetch---Retries---placeholder---;
