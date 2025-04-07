@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import "./App.css";
 import { useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, IconButton, Stack, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { FaUserGraduate } from "react-icons/fa";
@@ -206,6 +206,8 @@ const App = () => {
             padding: "0px 10px",
             width: collapsed ? "Calc(100% - 90px)" : "Calc(100% - 250px)",
             transition: collapsed && "width 500ms",
+            overflow: "auto",
+            height: "Calc(100vh - 32px)",
           }}
         >
           <Outlet />
